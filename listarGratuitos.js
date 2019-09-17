@@ -1,20 +1,21 @@
-const { MongoClient } = require('mongodb')
+const { MongoClient } = require( 'mongodb' )
 
-async function main() {
-
-    const connectionString = 'mongodb+srv://sarau-usr:PastelVegano2019@sarau-tecnologico-tmp-y1mnh.mongodb.net/test?retryWrites=true&w=majority'
+module.exports = {
+    listarGratuitos: async function() {
+        const connectionString = 'mongodb+srv://'
+        const client = await MongoClient.connect( connectionString )
+        const db = client.db( 'sarau' )
+        const eventosCollection = 'isadora-eventos'
+        const collection = db.collection( eventosCollection )
     
-    const client = await MongoClient.connect( connectionString )
-    const db = client.db( 'sarau' )
-    const collection = db.collection('isadora-eventos')
-
-    const gratuitos = await collection.find({
+        const gratuitos = await collection.find( {
             gratuito: true
-        }).toArray()
-            gratuitos.forEach(e => console.log(e.nome))
+        } ).toArray()
+    
+        gratuitos.forEach( e => console.log( e.nome ) )
+    
+        client.close()
         
-    client.close()
+        return gratuitos
+    }
 }
-main()
-
-
